@@ -185,6 +185,7 @@ export const buildingLayer = new BuildingSceneLayer({
       url: "https://gis.railway-sector.com/portal",
     },
   },
+  title: "Station Structure",
 });
 
 // Discipline: Architectural
@@ -198,6 +199,7 @@ export let stairsRailingLayer: null | any;
 export let stFramingLayer: null | any;
 export let stColumnLayer: null | any;
 export let stFoundationLayer: null | any;
+export let exteriorShellLayer: null | any;
 
 export const popuTemplate = {
   title: "{Station}",
@@ -296,6 +298,12 @@ buildingLayer.when(() => {
     switch (layer.modelName) {
       case "FullModel":
         layer.visible = true;
+        break;
+
+      case "Overview":
+        exteriorShellLayer = layer;
+        exteriorShellLayer.visible = false;
+        exteriorShellLayer.title = "Exterior Shell";
         break;
 
       case "Floors":
