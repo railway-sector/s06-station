@@ -26,6 +26,7 @@ export default function StationSegmentedList() {
         }}
         scale="m"
         width="full"
+        style={{ marginTop: "10px" }}
       >
         {stationSelected &&
           station_names.map((station: any, index: any) => {

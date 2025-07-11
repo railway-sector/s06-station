@@ -31,6 +31,7 @@ function MapDisplay() {
       arcgisScene.map.add(stationLayer);
       arcgisScene.map.ground.navigationConstraint = "none";
       arcgisScene.view.environment.atmosphereEnabled = false;
+      arcgisScene.view.environment.starsEnabled = false;
     }
   });
 
