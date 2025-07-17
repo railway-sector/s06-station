@@ -13,6 +13,12 @@ import {
 import StatisticDefinition from "@arcgis/core/rest/support/StatisticDefinition";
 import Query from "@arcgis/core/rest/support/Query";
 
+export const construction_status = [
+  "To be Constructed",
+  "Under Construction",
+  "Completed",
+];
+
 // Updat date
 export async function dateUpdate() {
   const monthList = [
