@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import "@arcgis/map-components/components/arcgis-basemap-gallery";
 import "@arcgis/map-components/components/arcgis-layer-list";
 import "@arcgis/map-components/components/arcgis-legend";
-import "@arcgis/map-components/components/arcgis-directline-measurement-3d";
+import "@arcgis/map-components/components/arcgis-direct-line-measurement-3d";
 import "@arcgis/map-components/components/arcgis-area-measurement-3d";
 import { defineActions } from "../Query";
 import { buildingLayer } from "../layers";
@@ -24,7 +24,7 @@ function ActionPanel() {
   const [nextWidget, setNextWidget] = useState(null);
 
   const directLineMeasure = document.querySelector(
-    "arcgis-directline-measurement-3d"
+    "arcgis-direct-line-measurement-3d"
   );
   const areaMeasure = document.querySelector("arcgis-area-measurement-3d");
   const arcgisBuildingExplorer = document.querySelector(
@@ -199,11 +199,11 @@ function ActionPanel() {
           style={{ width: "18vw" }}
           hidden
         >
-          <arcgis-directline-measurement-3d
+          <arcgis-direct-line-measurement-3d
             id="directLineMeasurementAnalysisButton"
             referenceElement="arcgis-scene"
             // onarcgisPropertyChange={(event) => console.log(event.target.id)}
-          ></arcgis-directline-measurement-3d>
+          ></arcgis-direct-line-measurement-3d>
         </CalcitePanel>
 
         <CalcitePanel
