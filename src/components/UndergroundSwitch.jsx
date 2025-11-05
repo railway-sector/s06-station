@@ -22,7 +22,7 @@ function UndergroundSwitch() {
         style={{
           position: "fixed",
           zIndex: 10,
-          bottom: 15,
+          bottom: 5,
           // left: 0,
           color: "white",
           backgroundColor: "#2b2b2b",
@@ -30,6 +30,8 @@ function UndergroundSwitch() {
           paddingRight: 5,
           paddingTop: 4,
           paddingBottom: 4,
+          borderStyle: "solid",
+          borderColor: "gray",
         }}
       >
         Ground: {""}
