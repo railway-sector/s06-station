@@ -225,7 +225,7 @@ function ActionPanel() {
           {nextWidget === "information" ? (
             <div style={{ paddingLeft: "20px" }}>
               This smart map shows the construction progress on structural
-              components of depot buildings:
+              components of station buildings:
               <ul>
                 <li>Structural Foundation, </li>
                 <li>Structural Column, </li>
