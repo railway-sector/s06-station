@@ -223,25 +223,28 @@ function ActionPanel() {
 
         <CalcitePanel heading="Description" data-panel-id="information" hidden>
           {nextWidget === "information" ? (
-            <div className="informationDiv">
+            <div style={{ paddingLeft: "20px" }}>
+              This smart map shows the construction progress on structural
+              components of depot buildings:
               <ul>
-                <li>
-                  You can <b>filter utility data</b> by contract package,
-                  company, and data type: (point or line) using dropdown lists
-                  in the header panel.
-                </li>
-                <br />
-                <li>
-                  <b>Click bar-chart series</b> to view 'Complete' or
-                  'Incomplete' progress on work status by individual utitliy
-                  types over the map.
-                </li>
-                <br />
-                <li>
-                  Click/unclick widgets icon for viewing Layer list, Legend, and
-                  Basemaps in the action panel.
-                </li>
+                <li>Structural Foundation, </li>
+                <li>Structural Column, </li>
+                <li>Structural Framing, </li>
+                <li>Floors, </li>
+                <li>Walls, </li>
+                <li>Others </li>
               </ul>
+              <div style={{ paddingLeft: "20px" }}>
+                <li>
+                  The source of data: <b>BIM models.</b>
+                </li>
+                <li>
+                  {" "}
+                  The Contractors update construction progress directly in the
+                  BIM models. The GIS Team uses the BIM models for updating
+                  smart maps.
+                </li>
+              </div>
             </div>
           ) : (
             <div className="informationDiv" hidden></div>
