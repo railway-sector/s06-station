@@ -12,10 +12,21 @@ import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import BuildingSceneLayer from "@arcgis/core/layers/BuildingSceneLayer";
 import SolidEdges3D from "@arcgis/core/symbols/edges/SolidEdges3D";
 import QueryExpressionLayers from "query-layers-expression";
+import ChartStackColumns from "chart-stack-column";
+import { status_field } from "./uniqueValues";
+
+export const chartstack = new ChartStackColumns(
+  undefined, // qChart
+  undefined, // categoryTypes
+  undefined, // categoryTypeField
+  undefined, // layers
+  status_field, // status field
+  undefined, // statusState
+);
 
 export const queryc = new QueryExpressionLayers(
-  undefined,
-  undefined,
+  [undefined],
+  [undefined],
   undefined,
   undefined,
   "string",

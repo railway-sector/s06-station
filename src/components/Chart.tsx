@@ -1,19 +1,9 @@
 import { useEffect, useRef, useState, use } from "react";
-import {
-  stColumnLayer,
-  stFoundationLayer,
-  stFramingLayer,
-  floorsLayer,
-  wallsLayer,
-  sublayersAll,
-  queryc,
-} from "../layers";
+import { stColumnLayer, sublayersAll, queryc, chartstack } from "../layers";
 import SubLayerView from "@arcgis/core/views/layers/BuildingComponentSublayerView";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
-import { thousands_separators, zoomToLayer } from "../Query";
+import { thousands_separators, zoomToLayer } from "../query";
 import { ArcgisScene } from "@arcgis/map-components/dist/components/arcgis-scene";
 import {
   chart_colors,
@@ -23,30 +13,20 @@ import {
   statusArray,
   structureTypes,
 } from "../uniqueValues";
-import { chartDataStackColumns } from "../ChartDataGenerator";
-import { chartRenderer, resetAllLayers } from "../ChartRenderer";
+import { chartRenderer, resetAllLayers } from "../chartRenderer";
 import { MyContext } from "../contexts/MyContext";
 import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
-import { queryDefinitionExpression } from "../QueryExpression";
-
-// Dispose function
-function maybeDisposeRoot(divId: any) {
-  am5.array.each(am5.registry.rootElements, function (root) {
-    if (root.dom.id === divId) {
-      root.dispose();
-    }
-  });
-}
+import { queryDefinitionExpression } from "../queryExpression";
+import { useQuery } from "@tanstack/react-query";
+import { legendSetter, rootSetter } from "../chartSetter";
 
 // Draw chart
 const Chart = () => {
-  const { updateChartPanelwidth, chartPanelwidth, stations } = use(MyContext);
+  const { stations } = use(MyContext);
+  const [chartPanelwidth, setChartPanelwidth] = useState<any>();
   const arcgisScene = document.querySelector("arcgis-scene") as ArcgisScene;
   const legendRef = useRef<unknown | any | undefined>({});
   const chartRef = useRef<unknown | any | undefined>({});
-  const [chartData, setChartData] = useState<any>([]);
-  const [totalNumber, setTotalNumber] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
   const [sublayerViewFilter, setSublayerViewFilter] = useState<
     SubLayerView | any
   >();
@@ -54,41 +34,41 @@ const Chart = () => {
   const highlightedSublayerView = useRef<any>(undefined);
   const chartID = "station-bar";
 
-  useEffect(() => {
-    const sublayersArray = sublayersAll.map((item: any) => item.layer);
+  const { data } = useQuery<any>({
+    queryKey: [structureTypes, stations],
+    queryFn: async () => {
+      const sublayersArray = sublayersAll.map((item: any) => item.layer);
 
-    queryc.qValues = [
-      stationValues.find((item) => item.station === stations)?.value,
-    ];
-    queryc.qFields = [stationName_field];
+      queryc.qValues = [
+        stationValues.find((item) => item.station === stations)?.value,
+      ];
+      queryc.qFields = [stationName_field];
 
-    queryDefinitionExpression({
-      queryExpression: queryc.queryExpression(),
-      featureLayer: sublayersArray,
-    });
+      queryDefinitionExpression({
+        queryExpression: queryc.queryExpression(),
+        featureLayer: sublayersArray,
+      });
 
-    chartDataStackColumns({
-      qChart: queryc.queryExpression(),
-      chartCategoryTypes: structureTypes,
-      chartCategoryField: undefined,
-      chartCategoryValueType: "string", //
-      layers: [
-        stFoundationLayer,
-        stColumnLayer,
-        stFramingLayer,
-        floorsLayer,
-        wallsLayer,
-      ],
-      statusState: [1, 2, 3, 4],
-      statusField: status_field,
-    }).then((response: any) => {
-      setChartData(response[0]);
-      setTotalNumber(response[1]);
-      setProgress(response[2]);
-    });
+      chartstack.qChart = queryc.queryExpression();
+      chartstack.layers = sublayersArray;
+      chartstack.categoryTypes = structureTypes;
+      chartstack.categoryTypeField = undefined;
+      chartstack.statusState = [1, 2, 3, 4];
+      const chartData = await chartstack.chartDataStackColumns();
 
-    zoomToLayer(stColumnLayer, arcgisScene);
-  }, [stations]);
+      zoomToLayer(stColumnLayer, arcgisScene);
+
+      return {
+        chartData: chartData[0] || [],
+        totaln: chartData[1] || 0,
+        perc: chartData[2] || 0,
+      };
+    },
+    staleTime: Infinity,
+  });
+  const chartData = data?.chartData || [];
+  const totaln = data?.totaln || 0;
+  const perc_comp = data?.perc || 0;
 
   // Define parameters
   const marginTop = 0;
@@ -113,18 +93,7 @@ const Chart = () => {
   const new_imageSize = chartPanelwidth * 0.04;
 
   useEffect(() => {
-    maybeDisposeRoot(chartID);
-
-    const root = am5.Root.new(chartID);
-    root.container.children.clear();
-    root._logo?.dispose();
-
-    // Set themesf
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([
-      am5themes_Animated.new(root),
-      am5themes_Responsive.new(root),
-    ]);
+    const root = rootSetter({ chartID: chartID });
 
     const chart = root.container.children.push(
       am5xy.XYChart.new(root, {
@@ -145,24 +114,25 @@ const Chart = () => {
     );
     chartRef.current = chart;
 
-    const legend = chart.children.push(
-      am5.Legend.new(root, {
-        centerX: am5.p50,
-        centerY: am5.percent(50),
-        x: am5.percent(50),
-        marginTop: 20,
-        scale: 0.9,
-        layout: root.horizontalLayout,
-      }),
-    );
+    const legend = legendSetter({
+      chart: chart,
+      root: root,
+      centerX: 50,
+      centerY: 50,
+      x: 50,
+      marginTop: 20,
+      scale: 0.9,
+      layout: root.horizontalLayout,
+    });
     legendRef.current = legend;
 
     chartRenderer({
       root: root,
       chart: chart,
       data: chartData,
+      qChart: queryc,
       chartCategoryTypes: structureTypes,
-      chartCategoryField: undefined,
+      chartCategoryFieldRevit: undefined,
       statusTypename: ["Completed", "To be Constructed", "Under Construction"], //["Completed", "To be Constructed", "Under Construction"],
       statusStatename: ["comp", "incomp", "ongoing"], //["comp", "incomp", "ongoing"],
       statusArray: statusArray,
@@ -178,7 +148,7 @@ const Chart = () => {
       new_chartIconSize: new_chartIconSize,
       new_axisFontSize: new_axisFontSize,
       legend: legend,
-      updateChartPanelwidth: updateChartPanelwidth,
+      updateChartPanelwidth: setChartPanelwidth,
     });
 
     chart.appear(1000, 100);
@@ -241,7 +211,7 @@ const Chart = () => {
               margin: "auto",
             }}
           >
-            {thousands_separators(progress)} %
+            {thousands_separators(perc_comp)} %
           </dd>
           <div
             style={{
@@ -250,7 +220,7 @@ const Chart = () => {
               fontFamily: "calibri",
             }}
           >
-            ({thousands_separators(totalNumber)})
+            ({thousands_separators(totaln)})
           </div>
         </dl>
       </div>

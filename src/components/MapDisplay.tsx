@@ -15,9 +15,11 @@ import {
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
 import type { ArcgisScene } from "@arcgis/map-components/dist/components/arcgis-scene";
+import { useState } from "react";
 
 function MapDisplay() {
   const arcgisScene = document.querySelector("arcgis-scene") as ArcgisScene;
+  const [_mapView, setMapView] = useState<any>();
 
   arcgisScene?.viewOnReady(() => {
     arcgisScene?.map?.add(prowLayer);
@@ -41,6 +43,9 @@ function MapDisplay() {
       viewingMode="local"
       zoom={18}
       center="121.1302399, 14.2695320"
+      onarcgisViewReadyChange={(event: any) => {
+        setMapView(event.target.id);
+      }}
     >
       <arcgis-compass slot="top-right"></arcgis-compass>
       <arcgis-zoom slot="bottom-right"></arcgis-zoom>
