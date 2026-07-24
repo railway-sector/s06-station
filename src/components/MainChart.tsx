@@ -13,13 +13,12 @@ function MainChart() {
     buildingLayer.load().then(() => {
       setBuildingLayerLoaded(buildingLayer.loadStatus);
     });
-  });
+  }, []);
 
   return (
     <>
       <div
         slot="panel-end"
-        // scale="l"
         style={{
           width: "550px",
           padding: "0 1rem",

@@ -11,7 +11,7 @@ import Header from "./components/Header";
 import MainChart from "./components/MainChart";
 import UndergroundSwitch from "./components/UndergroundSwitch";
 import { MyContext } from "./contexts/MyContext";
-import { station_names } from "./uniqueValues";
+import { stations_q } from "./uniqueValues";
 import { authenticate } from "./autho";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -23,7 +23,7 @@ export function App(): React.JSX.Element {
     authenticate(setLoggedInState, "ShxrVhhrqD42SRXD");
   }, []);
 
-  const [stations, setStations] = useState<any>(station_names[0]);
+  const [stations, setStations] = useState<any>(stations_q[0].name);
   const updateStations = (newStation: any) => {
     setStations(newStation);
   };
