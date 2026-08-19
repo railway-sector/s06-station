@@ -1,0 +1,1 @@
+import{e as r}from"./Animation-CGyUnblK.js";import"./index-l3W4lFcF.js";import"./Percent-Pk79EXaF.js";import"./Disposer-BBUjnjY3.js";const t=["#2888B8","#EB7028","#48A375","#9370B1","#e55035","#3d9ccc","#DC7B04","#b87bb0","#3fa681","#EE6386"],c=t.map(o=>r(o));export{c as esriChartColorSet};

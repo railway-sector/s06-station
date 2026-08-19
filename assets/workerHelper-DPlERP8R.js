@@ -1,0 +1,1 @@
+import{fP as e,fg as t}from"./index-l3W4lFcF.js";function n(f,u){return u.push(f.buffer),{buffer:f.buffer,layout:new e(f.layout)}}function o(f){return new t(f.layout).createView(f.buffer)}export{o as t,n as u};
