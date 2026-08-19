@@ -28,7 +28,7 @@ function Header() {
         }}
       >
         <img
-          src="https://EijiGorilla.github.io/Symbols/Projec_Logo/DOTr_Logo_v2.png"
+          src="https://EijiGorilla.github.io/Symbols/Projec_Logo/DOTr_Logo_v2.svg"
           alt="DOTr Logo"
           height={"55px"}
           width={"55px"}
@@ -64,10 +64,11 @@ function Header() {
             <StationSegmentedList />
           </div>
           <img
-            src="https://EijiGorilla.github.io/Symbols/Projec_Logo/GCR LOGO.png"
+            src="https://EijiGorilla.github.io/Symbols/Projec_Logo/GCR_LOGO.svg"
             alt="GCR Logo"
             height={"50px"}
             width={"75px"}
+            style={{ backgroundColor: "#f0e7e7" }}
           />
         </div>
       </header>

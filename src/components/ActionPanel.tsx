@@ -20,6 +20,13 @@ function ActionPanel() {
   const [activeWidget, setActiveWidget] = useState<any>(null);
   const [nextWidget, setNextWidget] = useState<any>(null);
 
+  //--- Render only when selected
+  const [hasOpenedBasemaps, setHasOpenedBasemaps] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (nextWidget === "basemaps") setHasOpenedBasemaps(true);
+  }, [nextWidget]);
+
   //--- Widget (Line Measurement & Building Explorer)
   const directLineMeasure = document.querySelector(
     "arcgis-direct-line-measurement-3d",
@@ -143,7 +150,9 @@ function ActionPanel() {
       </calcite-panel>
 
       <calcite-panel heading="Basemaps" data-panel-id="basemaps" hidden>
-        <arcgis-basemap-gallery referenceElement="arcgis-scene"></arcgis-basemap-gallery>
+        {hasOpenedBasemaps ? (
+          <arcgis-basemap-gallery referenceElement="arcgis-scene"></arcgis-basemap-gallery>
+        ) : null}
       </calcite-panel>
 
       <calcite-panel
