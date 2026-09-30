@@ -1,0 +1,1 @@
+import{Gp as o}from"./index-DnamRIld.js";import{P as c}from"./OperatorGeneralize-CwTPLh82.js";const u=new c;function s(n,r,t){return u.execute(n,r,t,null)}function i(n,r,t){const e=u.executeMany(new o(n),r,t,null);return Array.from(e)}function m(){return u.supportsCurves()}export{i as o,s as t,m as u};
