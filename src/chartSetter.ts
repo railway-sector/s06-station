@@ -111,6 +111,7 @@ export function legendSetter({
   const legend = chart.children.push(
     am5.Legend.new(root, {
       centerX: centerX && am5.percent(centerX),
+      width: am5.percent(105),
       x: am5.percent(x),
       marginTop: marginTop ? marginTop : 0,
       scale: scale ? scale : 1,
